@@ -2,7 +2,6 @@
 
 // Dependencies
 const express = require("express");
-const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
 
 // Initialize Express
@@ -16,11 +15,8 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/scraper');
-
 // Routes
-var routes = require("./routes");
+const routes = require("./routes");
 app.use(routes);
 
 // Tell express to LISTEN UP
