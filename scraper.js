@@ -13,27 +13,43 @@ let articleStorage = [];
 
 // business logic
 const scraper = {
-    scrape: callback => {
+    scrape: (target, callback) => {
 
         // Make sure articleStorage is empty
         articleStorage = [];
 
-        request("http://www.nytimes.com", function(error, response, html) {
+        let query = `http://www.nytimes.com/${target}`;
+        console.log(query);
+
+        request(query, function(error, response, html) {
 
             // Load the HTML into cheerio and save it to a variable
-            var $ = cheerio.load(html);
+            let $ = cheerio.load(html);
+
+            // adapt what we scrape based on whether we're scraping the home page or a section page
+            let targetElement;
+            if (!target) {
+                targetElement = "h2.story-heading";
+            }
+            else {
+                targetElement = "h2.headline";
+            }
 
             // Select each element in the HTML body from which you want information.
-            $("h2.story-heading").each(function(i, element) {
-                var link = $(element).children().attr("href");
-                var title = $(element).children().text();
+            $(targetElement).each(function(i, element) {
+                let link = $(element).children().attr("href");
+                let title = $(element).children().text();
 
                 // Save these results in an object that we'll push into the results array we defined earlier
-                articleStorage.push({
-                    title: title,
-                    link: link
-                });
+                // but only push 'em if they exist!
+                if (!!link && !!title) {
+                    articleStorage.push({
+                        title: title,
+                        link: link
+                    });
+                }
             });
+            
         callback(articleStorage);
         });
     }

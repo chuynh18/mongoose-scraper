@@ -9,9 +9,18 @@ router.get("/", (req, res) => {
     res.send("Welcome");
 });
 
+// scrapes NYT home page
 router.post("/scrape", (req, res) => {
-    scraper.scrape(function(data) {
-        console.log(data);
+    scraper.scrape("", function(data) {
+        res.json(data);
+    });
+})
+
+// scrapes sections.  Valid sections are:
+// world, us, politics, nyregion, business, opinion, technology, science, health, sports, arts, books
+// fashion, dining, travel, magazine, t-magazine, realestate, obituaries, learning, multimedia
+router.post("/scrape/:section", (req, res) => {
+    scraper.scrape(`section/${req.params.section}`, function(data) {
         res.json(data);
     });
 })
