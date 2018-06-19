@@ -19,7 +19,7 @@ const scraper = {
         articleStorage = [];
 
         let query = `http://www.nytimes.com/${target}`;
-        console.log(query);
+        console.log(`Attempting to scrape ${query}`);
 
         request(query, function(error, response, html) {
 
@@ -49,7 +49,6 @@ const scraper = {
                     });
                 }
             });
-            
         callback(articleStorage);
         });
     }
