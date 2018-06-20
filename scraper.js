@@ -1,5 +1,7 @@
 "use strict";
 
+// this is JavaScript for the back-end
+
 // dependencies
 const request = require("request");
 const cheerio = require("cheerio");

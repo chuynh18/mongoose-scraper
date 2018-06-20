@@ -1,8 +1,11 @@
 "use strict";
 
+// this is JavaScript for the back-end
+
 // Dependencies
 const express = require("express");
 const exphbs = require("express-handlebars");
+const bodyParser = require('body-parser')
 
 // Initialize Express
 const app = express();
@@ -14,6 +17,10 @@ app.use(express.static("public"));
 // Set up Express.js to use express-handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+// set up Express.js to handle data parsing
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Routes
 const routes = require("./routes");

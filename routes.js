@@ -1,12 +1,14 @@
 "use strict";
 
+// this is JavaScript for the back-end
+
 const express = require("express");
 const router = express.Router();
 const scraper = require("./scraper");
 
 // Routes go here
 router.get("/", (req, res) => {
-    res.send("Welcome");
+    res.render("index");
 });
 
 // scrapes NYT home page
