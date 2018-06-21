@@ -11,6 +11,9 @@ router.get("/", (req, res) => {
     res.render("index");
 });
 
+// ========== POST routes I originally made while getting scraping stood up ==========
+// had I used these routes, I would have done the rendering on the client side
+
 // scrapes NYT home page
 router.post("/scrape", (req, res) => {
     scraper.scrape("", function(data) {
@@ -26,5 +29,21 @@ router.post("/scrape/:section", (req, res) => {
         res.json(data);
     });
 })
+// ========== END POST routes ==========
+
+// ========== GET routes for actual consumption ==========
+// scrapes NYT home page
+router.get("/scrape", (req, res) => {
+    scraper.scrape("", function(data) {
+        res.render("scrape", {articles: data})
+    });
+})
+
+router.get("/scrape/:section", (req, res) => {
+    scraper.scrape(`section/${req.params.section}`, function(data) {
+        res.render("scrape", {articles: data})
+    });
+})
+// ========== END GET routes ==========
 
 module.exports = router;

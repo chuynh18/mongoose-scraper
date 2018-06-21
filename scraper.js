@@ -39,8 +39,8 @@ const scraper = {
 
             // Select each element in the HTML body from which you want information.
             $(targetElement).each(function(i, element) {
-                let link = $(element).children().attr("href");
-                let title = $(element).children().text();
+                const link = $(element).children().attr("href");
+                const title = $(element).children().text();
 
                 // Save these results in an object that we'll push into the results array we defined earlier
                 // but only push 'em if they exist!
