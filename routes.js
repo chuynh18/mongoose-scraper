@@ -34,7 +34,7 @@ router.post("/scrape", (req, res) => {
 // world, us, politics, nyregion, business, opinion, technology, science, health, sports, arts, books
 // fashion, dining, travel, magazine, t-magazine, realestate, obituaries, learning, multimedia
 router.post("/scrape/:section", (req, res) => {
-    scraper.scrape(`section/${req.params.section}`, function(data) {
+    scraper.scrape(`section/${req.params.section}`, data => {
         res.json(data);
     });
 });
@@ -49,7 +49,7 @@ router.get("/scrape", (req, res) => {
 });
 
 router.get("/scrape/:section", (req, res) => {
-    scraper.scrape(`section/${req.params.section}`, function(data) {
+    scraper.scrape(`section/${req.params.section}`, data => {
         res.render("scrape", {articles: data})
     });
 });
@@ -60,7 +60,7 @@ router.get("/scrape/:section", (req, res) => {
 router.get("/articles", (req, res) => {
     db.Article.find({})
     .then(dbArticle => {
-        res.json(dbArticle);
+        res.render("saved", {articles: dbArticle});
     })
     .catch(err => {
         res.json(err);
@@ -95,16 +95,16 @@ router.get("/article/:id", (req, res) => {
 
 // add/update note to a saved article
 // note should have...  let's go with a "title" and a "body"
-router.post("/article/:id", (req, res) => {
+router.post("/article/:id", function(req, res) {
     db.Note.create(req.body)
-    .then(dbNote => {
-        db.Article.findOneAndUpdate({_id: req.params.id}, {note: dbNote._id}, {new: true});
-        res.json(dbNote);
+    .then(function(dbNote) {
+        return db.Article.findOneAndUpdate({_id: req.params.id}, {note: dbNote._id}, {new: true});
     })
-    // .then(dbArticle => {
-    //     res.json(dbArticle);
-    // })
-    .catch(err => {
+    .then(function(dbArticle) {
+        console.log(dbArticle);
+        res.json(dbArticle);
+    })
+    .catch(function(err) {
     res.json(err);
     })
 });

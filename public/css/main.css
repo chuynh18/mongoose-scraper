@@ -34,6 +34,7 @@ input, select, textarea, button {
     margin: 0 auto;
     background-color: #111;
     color: #eee;
+    font-size: 22pt;
 }
 
 #siteTitle {
@@ -112,4 +113,13 @@ cursor: pointer;
 
 textarea {
     max-width: 100%;
+}
+
+.linkFormat {
+    text-decoration: none;
+    color: white;
+}
+
+#navToSavedArticles {
+    margin-right: 30px;
 }

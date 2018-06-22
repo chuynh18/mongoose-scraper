@@ -8,8 +8,8 @@
 	<body>
 		<div id="headerContainer">
 			<div id="header">
-				<span id="siteTitle">New York skyScraper</span>
-				<span id="sectionSelector">Section to scrape: <select id="scrapeSection">
+				<span id="siteTitle"><a href="/" class="linkFormat">New York skyScraper</a></span>
+				<span id="sectionSelector"><a href="/articles" class="linkFormat" id="navToSavedArticles">Saved articles</a><span id="sectionSelector"></span> NYT Section: <select id="scrapeSection">
 					<option value="">Home page</option>
 					<option value="world">World</option>
 					<option value="us">U.S.</option>
@@ -37,8 +37,6 @@
 			</div>
 		</div>
 
-		<div id="bodyContainer">{{{ body }}}</div>
-
 		<div id="saveArticleModal" class="modal">
 			<div class="modal-content">
 				<span class="close">&times;</span>
@@ -53,6 +51,23 @@
 				<p id="msgArea"></p>
 			</div>
 		</div>
+
+		<div id="notesModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p id="notesHeading">Add or edit a note</p>
+				<p id="notesArticleTitle"></p>
+				<p id="notesArticleUrl"></p>
+				<form action="javascript:void(0);">
+					<textarea name="notesTitle" id="notesTitle" placeholder="Note title" cols="100"></textarea><br>
+					<textarea name="notesBody" id="notesBody" placeholder="Note body" rows="6" cols="100"></textarea><br>
+					<input type="submit" id="notesSubmit" value="Save article" onclick="saveNotes()" />
+				</form>
+				<p id="notesMsgArea"></p>
+			</div>
+		</div>
+
+		<div id="bodyContainer">{{{ body }}}</div>
 
         <script src="/javascript/main.js"></script>
 	</body>

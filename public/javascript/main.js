@@ -28,7 +28,7 @@ loop:
     }
 }
 
-// === function for saving an article ===
+// === function for populating and opening save article modal ===
 const saveArticle = function(event) {
     document.getElementById("noteSubmit").removeAttribute("disabled");
     document.getElementById("noteSubmit").setAttribute("value", "Save article");   
@@ -39,23 +39,23 @@ const saveArticle = function(event) {
     modal.style.display = "block";
 }
 
+// === function for saving article to MongoDB and also adding notes ===
 const finalSaveArticle = function() {
     xhr.onload = () => {
-        console.log(xhr.response);
         let response = JSON.parse(xhr.response);
+        console.log(response);
 
         if (!!response.errmsg) {
-            console.log("duplicate detected");
             document.getElementById("msgArea").textContent = response.errmsg;
             document.getElementById("noteSubmit").setAttribute("disabled", "");
             document.getElementById("noteSubmit").setAttribute("value", "Article already saved");
         }
-        else if (!!response.link) {
+        else if (!!response.link && !response.note) {
             xhr.open("POST", `/article/${response._id}`, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(`title=${document.getElementById("noteTitle").value.trim()}&body=${document.getElementById("noteBody").value.trim()}`);
         }
-        else if (!!response.body) {
+        else if (!!response.note) {
             document.getElementById("msgArea").textContent = "Article has been saved.";
             document.getElementById("noteSubmit").setAttribute("disabled", "");
             document.getElementById("noteSubmit").setAttribute("value", "Article saved");
@@ -67,22 +67,69 @@ const finalSaveArticle = function() {
     xhr.send(`title=${document.getElementById("titleModal").textContent}&link=${document.getElementById("urlModal").textContent}`);
 }
 
+// function for viewing saved articles' notes
+var viewNotes = function(event) {
+    xhr.onload = () => {
+        let response = JSON.parse(xhr.response);
+        console.log(response);
+        if (!!response.link) {
+            document.getElementById("notesArticleTitle").textContent = `Title: ${response.title}`;
+            document.getElementById("notesArticleUrl").innerHTML = `URL: <a href=${response.link}>${response.link}</a>`;
+            if (!!response.note.body) {
+                document.getElementById("notesTitle").value = response.note.title;
+                document.getElementById("notesBody").value = response.note.body;
+                document.getElementById("notesSubmit").setAttribute("noteID", response._id);
+            }
+            modal2.style.display = "block";
+        }
+        
+    }
+
+    xhr.open("GET", `/article/${event.target.id}`, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send();
+}
+
+var saveNotes = function() {
+    xhr.open("POST", `/article/${document.getElementById("notesSubmit").getAttribute("noteid")}`, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(`title=${document.getElementById("notesTitle").value.trim()}&body=${document.getElementById("notesBody").value.trim()}`);
+}
+
 // === Attach event handlers to save article buttons ===
 const saveButtons = document.getElementsByClassName("saveArticle");
 for (let i = 0; i < saveButtons.length; i++) {
     saveButtons[i].addEventListener("click", saveArticle);
 }
 
+// === Attach event handlers to notes buttons ===
+const noteButtons = document.getElementsByClassName("addModifyNotes");
+for (let i = 0; i < noteButtons.length; i++) {
+    noteButtons[i].addEventListener("click", viewNotes);
+}
+
 // === modal close logic ===
 const modal = document.getElementById("saveArticleModal");
+const modal2 = document.getElementById("notesModal");
 const span = document.getElementsByClassName("close")[0];
+const span2 = document.getElementsByClassName("close")[1];
 
 span.onclick = function() {
     modal.style.display = "none";
 }
 
+span2.onclick = function() {
+    modal2.style.display = "none";
+}
+
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+    }
+}
+
+window.onclick = function(event) {
+    if (event.target == modal2) {
+        modal2.style.display = "none";
     }
 }
