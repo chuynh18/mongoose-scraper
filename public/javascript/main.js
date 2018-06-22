@@ -4,6 +4,7 @@
 
 // will use this in several functions to hit up the server
 const xhr = new XMLHttpRequest;
+let lastClickedButton;
 
 // === makes it so clicking "scrape" does HTTP GET on the appropriate route ===
 const scrape = function() {
@@ -30,12 +31,14 @@ loop:
 
 // === function for populating and opening save article modal ===
 const saveArticle = function(event) {
+    lastClickedButton = event.target;
     document.getElementById("noteSubmit").removeAttribute("disabled");
     document.getElementById("noteSubmit").setAttribute("value", "Save article");   
-    document.getElementById("titleModal").textContent = `Title: ${event.target.getAttribute("title")}`;
-    document.getElementById("urlModal").innerHTML = `URL: <a href=${event.target.getAttribute("link")}>${event.target.getAttribute("link")}</a>`;
+    document.getElementById("titleModal").textContent = `Title: ${lastClickedButton.getAttribute("title")}`;
+    document.getElementById("urlModal").innerHTML = `URL: <a href=${lastClickedButton.getAttribute("link")}>${lastClickedButton.getAttribute("link")}</a>`;
     document.getElementById("noteTitle").value = "";
     document.getElementById("noteBody").value = "";
+    document.getElementById("msgArea").textContent = "";
     modal.style.display = "block";
 }
 
@@ -49,6 +52,8 @@ const finalSaveArticle = function() {
             document.getElementById("msgArea").textContent = response.errmsg;
             document.getElementById("noteSubmit").setAttribute("disabled", "");
             document.getElementById("noteSubmit").setAttribute("value", "Article already saved");
+            lastClickedButton.setAttribute("disabled", "");
+            lastClickedButton.textContent = "Article saved";
         }
         else if (!!response.link && !response.note) {
             xhr.open("POST", `/article/${response._id}`, true);
@@ -59,6 +64,8 @@ const finalSaveArticle = function() {
             document.getElementById("msgArea").textContent = "Article has been saved.";
             document.getElementById("noteSubmit").setAttribute("disabled", "");
             document.getElementById("noteSubmit").setAttribute("value", "Article saved");
+            lastClickedButton.setAttribute("disabled", "");
+            lastClickedButton.textContent = "Article saved";
         }
     }
 
@@ -126,9 +133,6 @@ window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
-
-window.onclick = function(event) {
     if (event.target == modal2) {
         modal2.style.display = "none";
     }
