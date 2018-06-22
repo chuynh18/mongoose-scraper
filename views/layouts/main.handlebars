@@ -36,7 +36,24 @@
 				<button id="scrapeButton" onclick="scrape()">Scrape</button></span>
 			</div>
 		</div>
+
 		<div id="bodyContainer">{{{ body }}}</div>
+
+		<div id="saveArticleModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p id="modalHeading">Save article</p>
+				<p id="titleModal"></p>
+				<p id="urlModal"></p>
+				<form action="javascript:void(0);">
+					<textarea name="noteTitle" id="noteTitle" placeholder="Note title" cols="100"></textarea><br>
+					<textarea name="noteBody" id="noteBody" placeholder="Note body" rows="6" cols="100"></textarea><br>
+					<input type="submit" id="noteSubmit" value="Save article" onclick="finalSaveArticle()" />
+				</form>
+				<p id="msgArea"></p>
+			</div>
+		</div>
+
         <script src="/javascript/main.js"></script>
 	</body>
 </html>

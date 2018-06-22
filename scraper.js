@@ -5,10 +5,6 @@
 // dependencies
 const request = require("request");
 const cheerio = require("cheerio");
-const mongoose = require("mongoose");
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/scraper');
 
 // place to store articles temporarily
 let articleStorage = [];
