@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 
 // Set up and connect to MongoDB
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/scraper');
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines");
 
 // Require all models
 var db = require("./models");
