@@ -71,7 +71,7 @@ const finalSaveArticle = function() {
 
     xhr.open("POST", "/articles", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send(`title=${document.getElementById("titleModal").textContent}&link=${document.getElementById("urlModal").textContent}`);
+    xhr.send(`title=${lastClickedButton.getAttribute("title")}&link=${lastClickedButton.getAttribute("link")}`);
 }
 
 // function for viewing saved articles' notes
