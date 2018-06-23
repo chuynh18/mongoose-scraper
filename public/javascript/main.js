@@ -66,6 +66,9 @@ const finalSaveArticle = function() {
             document.getElementById("noteSubmit").setAttribute("value", "Article saved");
             lastClickedButton.setAttribute("disabled", "");
             lastClickedButton.textContent = "Article saved";
+            setTimeout(function() {
+                lastClickedButton.textContent = "";
+            }, 3000);
         }
     }
 
@@ -76,6 +79,7 @@ const finalSaveArticle = function() {
 
 // function for viewing saved articles' notes
 var viewNotes = function(event) {
+    document.getElementById("notesMsgArea").textContent = "";
     xhr.onload = () => {
         let response = JSON.parse(xhr.response);
         console.log(response);
@@ -86,6 +90,12 @@ var viewNotes = function(event) {
                 document.getElementById("notesTitle").value = response.note.title;
                 document.getElementById("notesBody").value = response.note.body;
                 document.getElementById("notesSubmit").setAttribute("noteID", response._id);
+            }
+            if (typeof response.note === "string") {
+                document.getElementById("notesMsgArea").textContent = "Notes saved!";
+                setTimeout(function() {
+                    document.getElementById("notesMsgArea").textContent = "";
+                }, 3000);
             }
             modal2.style.display = "block";
         }
