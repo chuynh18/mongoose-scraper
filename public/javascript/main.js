@@ -35,7 +35,7 @@ const saveArticle = function(event) {
     document.getElementById("noteSubmit").removeAttribute("disabled");
     document.getElementById("noteSubmit").setAttribute("value", "Save article");   
     document.getElementById("titleModal").textContent = `Title: ${lastClickedButton.getAttribute("title")}`;
-    document.getElementById("urlModal").innerHTML = `URL: <a href=${lastClickedButton.getAttribute("link")}>${lastClickedButton.getAttribute("link")}</a>`;
+    document.getElementById("urlModal").innerHTML = `URL: <a href=${lastClickedButton.getAttribute("link")} target="_blank">${lastClickedButton.getAttribute("link")}</a>`;
     document.getElementById("noteTitle").value = "";
     document.getElementById("noteBody").value = "";
     document.getElementById("msgArea").textContent = "";
@@ -85,7 +85,7 @@ var viewNotes = function(event) {
         console.log(response);
         if (!!response.link) {
             document.getElementById("notesArticleTitle").textContent = `Title: ${response.title}`;
-            document.getElementById("notesArticleUrl").innerHTML = `URL: <a href=${response.link}>${response.link}</a>`;
+            document.getElementById("notesArticleUrl").innerHTML = `URL: <a href=${response.link} target="_blank">${response.link}</a>`;
             if (!!response.note.body) {
                 document.getElementById("notesTitle").value = response.note.title;
                 document.getElementById("notesBody").value = response.note.body;
